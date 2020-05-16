@@ -22,8 +22,11 @@ def get_origin_pages():
 
 def format_lines(lines):
 	union_text = ""
+	zenkaku = "".join(chr(0xff01 + i) for i in range(94))
+	hankaku = "".join(chr(0x21 + i) for i in range(94))
 	for line in lines:
-		union_text += re.sub('。','\n',line)
+		text = str.maketrans(zenkaku,hankaku)
+		union_text += re.sub('。','\n',text)
 		union_text += "\n"
 	result_lines = union_text.split("\n")
 	return result_lines
