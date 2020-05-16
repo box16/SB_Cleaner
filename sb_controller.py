@@ -24,8 +24,9 @@ def format_lines(lines):
 	union_text = ""
 	zenkaku = "".join(chr(0xff01 + i) for i in range(94))
 	hankaku = "".join(chr(0x21 + i) for i in range(94))
+	zen_to_han = str.maketrans(zenkaku,hankaku)
 	for line in lines:
-		text = str.maketrans(zenkaku,hankaku)
+		text = line.translate(zen_to_han)
 		union_text += re.sub('。','\n',text)
 		union_text += "\n"
 	result_lines = union_text.split("\n")
