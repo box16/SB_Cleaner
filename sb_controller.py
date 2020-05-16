@@ -2,6 +2,7 @@ import json
 import MeCab
 import re
 import sys
+import copy
 
 RESULT_JSON = "result.json"
 
@@ -45,8 +46,9 @@ def collect_nouns(body_lines):
 	result_nouns = []
 	while node:
 		is_noun = node.feature.split(",")[0] == "名詞"
-		is_legal_num = is_noun and (node.feature.split(",")[1] == "数") and (len(node.surface) == 4)
-		is_legal_word = is_noun and not(node.feature.split(",")[1] == "代名詞") and (len(node.surface) >= 2)
+		is_num = is_noun and (node.feature.split(",")[1] == "数")
+		is_legal_num = is_num and (len(node.surface) == 4)
+		is_legal_word = is_noun and not(is_num) and not(node.feature.split(",")[1] == "代名詞") and (len(node.surface) >= 2)
 		
 		if is_legal_num or is_legal_word:
 			legal_noun = node.surface
@@ -56,6 +58,10 @@ def collect_nouns(body_lines):
 
 		node = node.next
 	result_nouns = list(set(result_nouns))
+	copy_nouns = copy.copy(result_nouns)
+	for noun in copy_nouns:
+		if noun in for_parse_text:
+			result_nouns.remove(noun)
 	return result_nouns
 
 def make_last_line(nouns):
@@ -87,8 +93,9 @@ if __name__ == "__main__":
 	for page in origin_pages:
 		body_lines = format_lines(page["lines"])
 		nouns = collect_nouns(body_lines)
-		last_line = make_last_line(nouns)
-		body_lines.append(last_line)
+		if len(nouns) > 0:
+			last_line = make_last_line(nouns)
+			body_lines.append(last_line)
 		page_dictionary = make_page_dictionary(body_lines)
 		add_page_result_json(page_dictionary)
 	finish_result_json()
