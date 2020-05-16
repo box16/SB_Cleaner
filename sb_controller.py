@@ -10,16 +10,12 @@ def initialize_result_json():
 	result_file.write("{\n\"pages\" : [ \n")
 	result_file.close()
 
-def make_mecab_dictionary():
-	dictionary = MeCab.Tagger('-d /usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd')
-	return dictionary
-
 def get_origin_pages():
 	if not sys.argv[1]:
 		print("No Input Json")
 		exit()
 	origin_file = open(sys.argv[1],"r")
-	origin_json = json.load(file)
+	origin_json = json.load(origin_file)
 	origin_pages = origin_json["pages"]
 	origin_file.close()
 	return origin_pages
@@ -32,17 +28,16 @@ def format_lines(lines):
 	result_lines = union_text.split("\n")
 	return result_lines
 
-def parse_to_node_lines(lines):
+
+def collect_nouns(body_lines):
 	for_parse_text = ""
-	for line in lines:
+	for line in body_lines:
 		if "[https" in line:
 			continue
 		for_parse_text += line
-	mecab_dictionary = make_mecab_dictionary()
-	node = dictionary.parseToNode(for_parse_text)
-	return node
+	mecab_dictionary = MeCab.Tagger('-d /usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd')
+	node = mecab_dictionary.parseToNode(for_parse_text)
 
-def collect_nouns(node):
 	result_nouns = []
 	while node:
 		is_noun = node.feature.split(",")[0] == "名詞"
@@ -82,15 +77,14 @@ def finish_result_json():
 	result_json.write("]\n}")
 	result_json.close()
 
-origin_pages = get_origin_pages()
-
-for page in origin_pages:
-	body_lines = format_lines(page["lines"])
-	node = parse_to_node_lines(body_lines)
-	nouns = collect_nouns(node)
-	last_line = make_last_line(nouns)
-	body_lines.append(last_line)
-	page_dictionary = make_page_dictionary(body_lines)
-	add_page_result_json(page_dictionary)
-
-finish_result_json()
+if __name__ == "__main__":
+	initialize_result_json()
+	origin_pages = get_origin_pages()
+	for page in origin_pages:
+		body_lines = format_lines(page["lines"])
+		nouns = collect_nouns(body_lines)
+		last_line = make_last_line(nouns)
+		body_lines.append(last_line)
+		page_dictionary = make_page_dictionary(body_lines)
+		add_page_result_json(page_dictionary)
+	finish_result_json()
