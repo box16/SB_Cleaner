@@ -5,7 +5,6 @@ import sys
 import copy
 
 RESULT_JSON = "result.json"
-
 def initialize_result_json():
 	result_file = open(RESULT_JSON,"w")
 	result_file.write("{\n\"pages\" : [ \n")
@@ -31,16 +30,17 @@ def format_lines(lines):
 		union_text += re.sub('。','\n',text)
 		union_text += "\n"
 	result_lines = union_text.split("\n")
+	result_lines = result_lines
 	return result_lines
 
 
 def collect_nouns(body_lines):
 	for_parse_text = ""
 	for line in body_lines:
-		if "[https" in line:
+		if "https" in line:
 			continue
 		for_parse_text += line
-	mecab_dictionary = MeCab.Tagger('-d /usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd')
+	mecab_dictionary = MeCab.Tagger('-d /usr/lib/arm-linux-gnueabihf/mecab/dic/mecab-ipadic-neologd')
 	node = mecab_dictionary.parseToNode(for_parse_text)
 
 	result_nouns = []
