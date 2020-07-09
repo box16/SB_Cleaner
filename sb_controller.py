@@ -40,7 +40,7 @@ def collect_nouns(body_lines):
 		if "[https" in line:
 			continue
 		for_parse_text += line
-	mecab_dictionary = MeCab.Tagger('-d /usr/lib/x86_64-linux-gnu/mecab/dic/mecab-ipadic-neologd')
+	mecab_dictionary = MeCab.Tagger('-d /usr/lib/arm-linux-gnueabihf/mecab/dic/mecab-ipadic-neologd')
 	node = mecab_dictionary.parseToNode(for_parse_text)
 
 	result_nouns = []
