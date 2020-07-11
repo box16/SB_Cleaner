@@ -31,13 +31,14 @@ def format_lines(lines):
 		union_text += re.sub('。','\n',text)
 		union_text += "\n"
 	result_lines = union_text.split("\n")
+	result_lines = result_lines.decode("unicode-escape")
 	return result_lines
 
 
 def collect_nouns(body_lines):
 	for_parse_text = ""
 	for line in body_lines:
-		if "[https" in line:
+		if "https" in line:
 			continue
 		for_parse_text += line
 	mecab_dictionary = MeCab.Tagger('-d /usr/lib/arm-linux-gnueabihf/mecab/dic/mecab-ipadic-neologd')
@@ -78,7 +79,7 @@ def make_page_dictionary(body_lines):
 
 def add_page_result_json(page_dictionary):
 	result_file = open(RESULT_JSON,"a")
-	json.dump(str(page_dictionary).decode("string-escape"),result_file,indent=2,ensure_ascii=False)
+	json.dump(page_dictionary,result_file,indent=2,ensure_ascii=False)
 	result_file.write(",\n")
 	result_file.close()
 
