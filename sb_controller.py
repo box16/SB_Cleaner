@@ -28,10 +28,11 @@ def format_lines(lines):
 	zen_to_han = str.maketrans(zenkaku,hankaku)
 	for line in lines:
 		text = line.translate(zen_to_han)
+		text = text.decode("unicode-escape")
 		union_text += re.sub('。','\n',text)
 		union_text += "\n"
 	result_lines = union_text.split("\n")
-	result_lines = result_lines.decode("unicode-escape")
+	result_lines = result_lines
 	return result_lines
 
 
