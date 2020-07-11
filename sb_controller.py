@@ -28,6 +28,7 @@ def format_lines(lines):
 	zen_to_han = str.maketrans(zenkaku,hankaku)
 	for line in lines:
 		text = line.translate(zen_to_han)
+		text = text.encode('utf-16', 'surrogatepass').decode('utf-16')
 		union_text += re.sub('。','\n',text)
 		union_text += "\n"
 	result_lines = union_text.split("\n")
