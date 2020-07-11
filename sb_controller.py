@@ -7,7 +7,7 @@ import copy
 RESULT_JSON = "result.json"
 
 def initialize_result_json():
-	result_file = open(RESULT_JSON,"w",encoding="utf_8_sig")
+	result_file = open(RESULT_JSON,"w",decoding="utf_8_sig")
 	result_file.write("{\n\"pages\" : [ \n")
 	result_file.close()
 
@@ -77,13 +77,13 @@ def make_page_dictionary(body_lines):
 	return page_dictionary
 
 def add_page_result_json(page_dictionary):
-	result_file = open(RESULT_JSON,"a",encoding="utf_8_sig")
+	result_file = open(RESULT_JSON,"a",decoding="utf_8_sig")
 	json.dump(page_dictionary,result_file,indent=2,ensure_ascii=False)
 	result_file.write(",\n")
 	result_file.close()
 
 def finish_result_json():
-	result_json = open(RESULT_JSON,"a",encoding="utf_8_sig")
+	result_json = open(RESULT_JSON,"a",decoding="utf_8_sig")
 	result_json.write("]\n}")
 	result_json.close()
 
