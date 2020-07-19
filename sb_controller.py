@@ -5,7 +5,6 @@ import sys
 import copy
 
 RESULT_JSON = "result.json"
-sys.stdin = io.TextIOWrapper(sys.stdin.buffer, encoding="utf-8")
 def initialize_result_json():
 	result_file = open(RESULT_JSON,"w")
 	result_file.write("{\n\"pages\" : [ \n")
@@ -42,7 +41,7 @@ def collect_nouns(body_lines):
 			continue
 		for_parse_text += line
 	mecab_dictionary = MeCab.Tagger('-d /usr/lib/arm-linux-gnueabihf/mecab/dic/mecab-ipadic-neologd')
-	node = mecab_dictionary.parseToNode(for_parse_text)
+	node = mecab_dictionary.parseToNode(for_parse_text)7
 
 	result_nouns = []
 	while node:
