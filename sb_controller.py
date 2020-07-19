@@ -92,10 +92,10 @@ if __name__ == "__main__":
 	initialize_result_json()
 	origin_pages = get_origin_pages()
 	for page in origin_pages:
-		print("page")
-		print(page)
-		print()
 		body_lines = format_lines(page["lines"])
+		print("body_lines")
+		print(body_lines)
+		print()
 		nouns = collect_nouns(body_lines)
 		if len(nouns) > 0:
 			last_line = make_last_line(nouns)
