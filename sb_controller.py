@@ -52,8 +52,14 @@ def collect_nouns(body_lines):
 		
 		if is_legal_num or is_legal_word:
 			legal_noun = node.surface
+			print("legal_noun")
+			print(legal_noun)
+			print()
 			legal_noun = re.sub('[\s]','_',legal_noun)
 			legal_noun = "#" + legal_noun + " "
+			print("legal_noun_re")
+			print(legal_noun)
+			print()
 			result_nouns.append(legal_noun)
 
 		node = node.next
@@ -92,13 +98,8 @@ if __name__ == "__main__":
 	origin_pages = get_origin_pages()
 	for page in origin_pages:
 		body_lines = format_lines(page["lines"])
-		print("body_lines")
-		print(body_lines)
-		print()
 		nouns = collect_nouns(body_lines)
-		print("nouns")
-		print(nouns)
-		pirnt()
+		print("nounsの制作過程で何かまずいことが起きている")
 		if len(nouns) > 0:
 			last_line = make_last_line(nouns)
 			body_lines.append(last_line)
