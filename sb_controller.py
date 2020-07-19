@@ -41,7 +41,7 @@ def collect_nouns(body_lines):
 			continue
 		for_parse_text += line
 	mecab_dictionary = MeCab.Tagger('-d /usr/lib/arm-linux-gnueabihf/mecab/dic/mecab-ipadic-neologd')
-	node = mecab_dictionary.parseToNode(for_parse_text)7
+	node = mecab_dictionary.parseToNode(for_parse_text)
 
 	result_nouns = []
 	while node:
