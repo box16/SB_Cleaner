@@ -92,6 +92,9 @@ if __name__ == "__main__":
 	initialize_result_json()
 	origin_pages = get_origin_pages()
 	for page in origin_pages:
+		print("page")
+		print(page)
+		print()
 		body_lines = format_lines(page["lines"])
 		nouns = collect_nouns(body_lines)
 		if len(nouns) > 0:
