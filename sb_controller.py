@@ -78,6 +78,7 @@ def make_page_dictionary(body_lines):
 
 def add_page_result_json(page_dictionary):
 	result_file = open(RESULT_JSON,"a")
+	print(page_dictionary)
 	json.dump(page_dictionary,result_file,indent=2,ensure_ascii=False)
 	result_file.write(",\n")
 	result_file.close()
