@@ -94,7 +94,6 @@ if __name__ == "__main__":
 	for page in origin_pages:
 		body_lines = format_lines(page["lines"])
 		nouns = collect_nouns(body_lines)
-		print("nounsの制作過程で何かまずいことが起きている")
 		if len(nouns) > 0:
 			last_line = make_last_line(nouns)
 			body_lines.append(last_line)
