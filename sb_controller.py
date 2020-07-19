@@ -41,6 +41,7 @@ def collect_nouns(body_lines):
 			continue
 		for_parse_text += line
 	mecab_dictionary = MeCab.Tagger('-d /usr/lib/arm-linux-gnueabihf/mecab/dic/mecab-ipadic-neologd')
+	mecab_dictionary.parse("")
 	node = mecab_dictionary.parseToNode(for_parse_text)
 
 	result_nouns = []
@@ -52,7 +53,7 @@ def collect_nouns(body_lines):
 		
 		if is_legal_num or is_legal_word:
 			legal_noun = node.surface
-			legal_noun = legal_noun.encode('utf-8', 'replace').decode()
+#			legal_noun = legal_noun.encode('utf-8', 'replace').decode()
 			legal_noun = re.sub('[\s]','_',legal_noun)
 			legal_noun = "#" + legal_noun + " "
 			result_nouns.append(legal_noun)
@@ -93,9 +94,6 @@ if __name__ == "__main__":
 	origin_pages = get_origin_pages()
 	for page in origin_pages:
 		body_lines = format_lines(page["lines"])
-		print("body_lines")
-		print(body_lines)
-		print()
 		nouns = collect_nouns(body_lines)
 		if len(nouns) > 0:
 			last_line = make_last_line(nouns)
