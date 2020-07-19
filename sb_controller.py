@@ -78,7 +78,6 @@ def make_page_dictionary(body_lines):
 
 def add_page_result_json(page_dictionary):
 	result_file = open(RESULT_JSON,"a")
-	print(page_dictionary)
 	json.dump(page_dictionary,result_file,indent=2,ensure_ascii=False)
 	result_file.write(",\n")
 	result_file.close()
@@ -93,7 +92,13 @@ if __name__ == "__main__":
 	origin_pages = get_origin_pages()
 	for page in origin_pages:
 		body_lines = format_lines(page["lines"])
+		print("body_lines")
+		print(body_lines)
+		print()
 		nouns = collect_nouns(body_lines)
+		print("nouns")
+		print(nouns)
+		pirnt()
 		if len(nouns) > 0:
 			last_line = make_last_line(nouns)
 			body_lines.append(last_line)
