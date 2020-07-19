@@ -52,14 +52,9 @@ def collect_nouns(body_lines):
 		
 		if is_legal_num or is_legal_word:
 			legal_noun = node.surface
-			print("legal_noun")
-			print(legal_noun.encode('utf-8', 'replace'))
-			print()
+			legal_noun = legal_noun.encode('utf-8', 'replace')
 			legal_noun = re.sub('[\s]','_',legal_noun)
 			legal_noun = "#" + legal_noun + " "
-			print("legal_noun_re")
-			print(legal_noun)
-			print()
 			result_nouns.append(legal_noun)
 
 		node = node.next
