@@ -22,15 +22,10 @@ def get_origin_pages():
 
 def format_lines(lines):
 	union_text = ""
-	zenkaku = "".join(chr(0xff01 + i) for i in range(94))
-	hankaku = "".join(chr(0x21 + i) for i in range(94))
-	zen_to_han = str.maketrans(zenkaku,hankaku)
 	for line in lines:
-		text = line.translate(zen_to_han)
-		union_text += re.sub('。','\n',text)
+		union_text += re.sub('。','\n',lines)
 		union_text += "\n"
 	result_lines = union_text.split("\n")
-	result_lines = result_lines
 	return result_lines
 
 
@@ -46,14 +41,13 @@ def collect_nouns(body_lines):
 
 	result_nouns = []
 	while node:
-		is_noun = node.feature.split(",")[0] == "名詞"
+		is_noun = (node.feature.split(",")[0] == "名詞") and (len(node.surface) >= 2)	
 		is_num = is_noun and (node.feature.split(",")[1] == "数")
 		is_legal_num = is_num and (len(node.surface) == 4)
-		is_legal_word = is_noun and not(is_num) and not(node.feature.split(",")[1] == "代名詞") and (len(node.surface) >= 2)
+		is_legal_word = is_noun and not(is_num) and not(node.feature.split(",")[1] == "代名詞")
 		
 		if is_legal_num or is_legal_word:
 			legal_noun = node.surface
-#			legal_noun = legal_noun.encode('utf-8', 'replace').decode()
 			legal_noun = re.sub('[\s]','_',legal_noun)
 			legal_noun = "#" + legal_noun + " "
 			result_nouns.append(legal_noun)
@@ -78,10 +72,13 @@ def make_page_dictionary(body_lines):
 	page_dictionary = {**title_dictionary,**lines_dictionary}
 	return page_dictionary
 
-def add_page_result_json(page_dictionary):
+def add_page_result_json(page_dictionary,is_last):
 	result_file = open(RESULT_JSON,"a")
 	json.dump(page_dictionary,result_file,indent=2,ensure_ascii=False)
-	result_file.write(",\n")
+	if(is_last):
+		result_file.write("\n")
+	else:
+		result_file.write(",\n")
 	result_file.close()
 
 def finish_result_json():
@@ -89,15 +86,23 @@ def finish_result_json():
 	result_json.write("]\n}")
 	result_json.close()
 
+def lastone(iterable):
+    it = iter(iterable)
+    last = next(it)
+    for val in it:
+        yield last, False
+        last = val
+	yield last, True
+
 if __name__ == "__main__":
 	initialize_result_json()
 	origin_pages = get_origin_pages()
-	for page in origin_pages:
+	for page,is_last in lastone(origin_pages):
 		body_lines = format_lines(page["lines"])
 		nouns = collect_nouns(body_lines)
 		if len(nouns) > 0:
 			last_line = make_last_line(nouns)
 			body_lines.append(last_line)
-		page_dictionary = make_page_dictionary(body_lines)
-		add_page_result_json(page_dictionary)
+			page_dictionary = make_page_dictionary(body_lines)
+			add_page_result_json(page_dictionary,is_last)
 	finish_result_json()
