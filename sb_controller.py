@@ -23,11 +23,10 @@ def get_origin_pages():
 def format_lines(lines):
 	union_text = ""
 	for line in lines:
-		union_text += re.sub('。','\n',lines)
+		union_text += re.sub('。','\n',line)
 		union_text += "\n"
 	result_lines = union_text.split("\n")
 	return result_lines
-
 
 def collect_nouns(body_lines):
 	for_parse_text = ""
