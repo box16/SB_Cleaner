@@ -86,12 +86,12 @@ def finish_result_json():
 	result_json.close()
 
 def lastone(iterable):
-    it = iter(iterable)
-    last = next(it)
-    for val in it:
-        yield last, False
-        last = val
-	yield last, True
+	it = iter(iterable)
+	last = next(it)
+	for val in it:
+		yield last,False
+		last = val
+	yield last,True
 
 if __name__ == "__main__":
 	initialize_result_json()
